@@ -24,8 +24,8 @@ function play() {
     };
     function sine() {
       setTimeout(() => {
-        console.log(Math.sin(context.currentTime));
-        source.playbackRate.value = 1 + Math.sin(context.currentTime / 0.01) / 30;
+        console.log(Math.sin(2 * Math.PI * context.currentTime));
+        source.playbackRate.value = 1 + Math.sin(2 * Math.PI * 30 * context.currentTime) * 0.02;
         sine();
       }, 5);
     };
