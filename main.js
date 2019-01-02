@@ -8,7 +8,7 @@ function play() {
   let req = new XMLHttpRequest();
 
   req.onload = function () {
-    function warble() {
+    function square() {
       setTimeout(() => {
         if (toggle === false) {
           source.playbackRate.value = 0.98;
@@ -25,7 +25,7 @@ function play() {
     function sine() {
       setTimeout(() => {
         console.log(Math.sin(2 * Math.PI * context.currentTime));
-        source.playbackRate.value = 1 + Math.sin(2 * Math.PI * 30 * context.currentTime) * 0.02;
+        source.playbackRate.value = 0.5 + Math.sin(2 * Math.PI * 15 * context.currentTime) * 0.03;
         sine();
       }, 5);
     };
@@ -45,4 +45,17 @@ function play() {
   req.send();
 }
 
+navigator.mediaDevices.enumerateDevices()
+.then (function(muzak) {
+  console.log(muzak);
+});
 
+navigator.mediaDevices
+  .getUserMedia({audio: {
+    deviceId: "Internal Microphone (Built-in)"
+  }})
+  .then(muzak => {
+    console.log(muzak);
+    let source = context.createMediaStreamSource(muzak);
+    source.connect(context.destination);
+  });
