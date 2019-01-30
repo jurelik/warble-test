@@ -25,7 +25,7 @@ function play() {
     function sine() {
       setTimeout(() => {
         console.log(Math.sin(2 * Math.PI * context.currentTime));
-        source.playbackRate.value = 0.5 + Math.sin(2 * Math.PI * 15 * context.currentTime) * 0.03;
+        source.playbackRate.value = 1 + Math.sin(2 * Math.PI * 15 * context.currentTime) * 0.03;
         sine();
       }, 5);
     };
@@ -43,19 +43,24 @@ function play() {
   req.open('GET', 'warble.mp3', true);
   req.responseType = 'arraybuffer';
   req.send();
+};
+
+function one() {
+  navigator.mediaDevices.enumerateDevices()
+  .then (function(muzak) {
+    console.log(muzak);
+  });
 }
 
-navigator.mediaDevices.enumerateDevices()
-.then (function(muzak) {
-  console.log(muzak);
-});
-
-navigator.mediaDevices
-  .getUserMedia({audio: {
-    deviceId: "Internal Microphone (Built-in)"
-  }})
-  .then(muzak => {
-    console.log(muzak);
-    let source = context.createMediaStreamSource(muzak);
-    source.connect(context.destination);
-  });
+function mic(device) {
+  navigator.mediaDevices
+    .getUserMedia({audio: {
+      deviceId: device,
+      echoCancellation: false
+    }})
+    .then(muzak => {
+      console.log(muzak);
+      let source = context.createMediaStreamSource(muzak);
+      source.connect(context.destination);
+    });
+};
